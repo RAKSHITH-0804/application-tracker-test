@@ -19,44 +19,55 @@ from auth import (
     get_current_user_id
 )
 
-# Set up rate limiter
-limiter = Limiter(key_func=get_remote_address)
+def get_real_client_ip(request: Request) -> str:
+    # Handle X-Forwarded-For if behind a reverse proxy/load balancer
+    x_forwarded_for = request.headers.get("X-Forwarded-For")
+    if x_forwarded_for:
+        return x_forwarded_for.split(",")[0].strip()
+    return get_remote_address(request)
+
+# Set up rate limiter with reverse proxy IP support
+limiter = Limiter(key_func=get_real_client_ip)
 app = FastAPI(title="Job Application Tracker")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-
+ALLOWED_ORIGINS = [
+    origin.strip() for origin in os.environ.get(
+        "ALLOWED_ORIGINS", "https://application-tracker-iota.vercel.app"
+    ).split(",") if origin.strip()
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://application-tracker-iota.vercel.app"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Cookie"],
 )
 
 COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "True").lower() == "true"
 
 # Pydantic Schemas
 class UserAuth(BaseModel):
-    email: str
-    password: str
+    email: EmailStr
+    password: str = Field(..., min_length=6, max_length=128)
 
 class ApplicationCreate(BaseModel):
-    company: str
-    role: Optional[str] = None
+    company: str = Field(..., min_length=1, max_length=255)
+    role: Optional[str] = Field(None, max_length=255)
     status: Optional[str] = "wishlist"
     date_applied: Optional[date] = None
-    link: Optional[str] = None
-    notes: Optional[str] = None
+    link: Optional[str] = Field(None, max_length=2048)
+    notes: Optional[str] = Field(None, max_length=5000)
 
 class ApplicationUpdate(BaseModel):
-    company: str
-    role: Optional[str] = None
+    company: str = Field(..., min_length=1, max_length=255)
+    role: Optional[str] = Field(None, max_length=255)
     status: str
     date_applied: Optional[date] = None
-    link: Optional[str] = None
-    notes: Optional[str] = None
+    link: Optional[str] = Field(None, max_length=2048)
+    notes: Optional[str] = Field(None, max_length=5000)
 
 # Middleware for standard security headers
 @app.middleware("http")
@@ -93,6 +104,14 @@ async def get_css():
 @app.get("/app.js")
 async def get_js():
     return FileResponse("frontend/app.js")
+
+@app.get("/login.js")
+async def get_login_js():
+    return FileResponse("frontend/login.js")
+
+@app.get("/signup.js")
+async def get_signup_js():
+    return FileResponse("frontend/signup.js")
 
 # Auth Endpoints
 @app.post("/auth/signup", status_code=status.HTTP_201_CREATED)
