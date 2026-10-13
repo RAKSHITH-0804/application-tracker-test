@@ -70,12 +70,12 @@ async function loadUserInfo() {
         const response = await apiFetch('/auth/me');
         if (response && response.ok) {
             const data = await response.json();
-            document.getElementById('user-display').innerText = `AGENT: ${data.email.toUpperCase()}`;
+            document.getElementById('user-display').innerText = `USER: ${data.email}`;
         } else {
-            document.getElementById('user-display').innerText = 'AGENT: ACTIVE';
+            document.getElementById('user-display').innerText = 'USER: ACTIVE';
         }
     } catch (err) {
-        document.getElementById('user-display').innerText = 'AGENT: ACTIVE';
+        document.getElementById('user-display').innerText = 'USER: ACTIVE';
     }
 }
 
@@ -150,7 +150,7 @@ function renderApplications() {
     if (filtered.length === 0) {
         container.innerHTML = `
             <div class="dossier-card empty-card">
-                <p>NO FILES MATCHING CRITERIA FOUND IN DOSSIER.</p>
+                <p>No job applications matching search criteria.</p>
             </div>
         `;
         return;
@@ -171,12 +171,16 @@ function renderApplications() {
         const roleEscaped = app.role ? escapeHtml(app.role) : 'ROLE: UNKNOWN';
         const statusEscaped = escapeHtml(app.status);
         const notesEscaped = app.notes ? escapeHtml(app.notes) : '';
+        const dateString = app.date_applied ? app.date_applied : 'N/A';
+        const linkHtml = app.link ? `<a href="${app.link}" target="_blank" class="dossier-link">Open Link &gt;&gt;</a>` : 'N/A';
         
         card.innerHTML = `
             <div class="case-header-row">
                 <div class="case-title-area">
                     <h3>${companyEscaped}</h3>
                     <span class="case-role">${roleEscaped}</span>
+                    <h3>${app.company}</h3>
+                    <span class="case-role">${app.role || 'ROLE: UNSPECIFIED'}</span>
                 </div>
                 <div class="stamp-badge">${statusEscaped}</div>
             </div>
@@ -190,6 +194,14 @@ function renderApplications() {
             <div class="case-actions">
                 <button class="action-btn" onclick="startEdit(${Number(app.id)})">EDIT FILE</button>
                 <button class="action-btn delete" onclick="deleteCase(${Number(app.id)})">PURGE RECORD</button>
+                <div class="case-meta">DATE APPLIED: <span>${dateString}</span></div>
+                <div class="case-meta">REFERENCE LINK: <span>${linkHtml}</span></div>
+                ${app.notes ? `<div class="case-notes-block">${app.notes}</div>` : ''}
+            </div>
+            
+            <div class="case-actions">
+                <button class="action-btn" onclick="startEdit(${app.id})">EDIT RECORD</button>
+                <button class="action-btn delete" onclick="deleteCase(${app.id})">DELETE</button>
             </div>
         `;
         
@@ -254,8 +266,8 @@ window.startEdit = function(id) {
     document.getElementById('notes').value = app.notes || '';
     
     // Update labels and buttons
-    document.getElementById('form-tab-title').innerText = 'EDIT CASE';
-    document.getElementById('form-header').innerText = `CASE FILE #${app.id}`;
+    document.getElementById('form-tab-title').innerText = 'EDIT APPLICATION';
+    document.getElementById('form-header').innerText = `RECORD #${app.id}`;
     document.getElementById('submit-btn').innerText = 'UPDATE RECORD';
     document.getElementById('cancel-edit-btn').classList.remove('hidden');
     
@@ -268,15 +280,15 @@ window.abortEdit = function() {
     document.getElementById('app-id').value = '';
     document.getElementById('application-form').reset();
     
-    document.getElementById('form-tab-title').innerText = 'ADD NEW CASE';
-    document.getElementById('form-header').innerText = 'NEW CASE FILE';
-    document.getElementById('submit-btn').innerText = 'SUBMIT RECORD';
+    document.getElementById('form-tab-title').innerText = 'ADD APPLICATION';
+    document.getElementById('form-header').innerText = 'NEW RECORD';
+    document.getElementById('submit-btn').innerText = 'SAVE RECORD';
     document.getElementById('cancel-edit-btn').classList.add('hidden');
 }
 
 // Delete application entry
 window.deleteCase = async function(id) {
-    if (!confirm('ARE YOU SURE YOU WANT TO PURGE THIS CASE FILE?')) return;
+    if (!confirm('Are you sure you want to delete this job record?')) return;
     
     try {
         const response = await apiFetch(`/applications/${id}`, {

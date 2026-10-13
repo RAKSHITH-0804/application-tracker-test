@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLASSIFIED: Personal Job Dossier</title>
+    <title>Firebase Job Tracker Console</title>
     <link rel="stylesheet" href="/style.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="dossier-body">
     <header class="dossier-header">
         <div class="header-logo">
-            <span class="confidential-stamp">RESTRICTED</span>
+            <span class="confidential-stamp">🔥 FIREBASE CONSOLE</span>
             <div class="logo-text">
-                <h1>JOB DOSSIER TRACKER</h1>
-                <p>STATUS SUB-REGISTRY // DEPARTMENT OF CAREERS</p>
+                <h1>Job Application Tracker</h1>
+                <p>CAREER PIPELINE // MANAGEMENT REGISTRY</p>
             </div>
         </div>
         <div class="user-control">
-            <span id="user-display" class="user-tag">AGENT: loading...</span>
-            <button id="logout-btn" class="logout-btn">SECURE LOGOUT</button>
+            <span id="user-display" class="user-tag">USER: loading...</span>
+            <button id="logout-btn" class="logout-btn">SIGN OUT</button>
         </div>
     </header>
 
@@ -54,21 +54,21 @@
             <!-- LEFT PANEL: Add/Edit Form -->
             <section class="left-panel">
                 <div class="dossier-card form-card">
-                    <div class="folder-tab card-tab" id="form-tab-title">ADD NEW CASE</div>
-                    <h2 class="card-title" id="form-header">NEW CASE FILE</h2>
+                    <div class="card-tab" id="form-tab-title">ADD APPLICATION</div>
+                    <h2 class="card-title" id="form-header">NEW RECORD</h2>
                     <form id="application-form" class="dossier-form">
                         <input type="hidden" id="app-id">
                         
                         <div class="form-group">
-                            <label for="company" class="form-label">COMPANY NAME*:</label>
-                            <input type="text" id="company" required placeholder="e.g. Acme Corp" class="form-input">
+                            <label for="company" class="form-label">Company Name*</label>
+                            <input type="text" id="company" required placeholder="e.g. Google" class="form-input">
                         </div>
                         <div class="form-group">
-                            <label for="role" class="form-label">JOB ROLE / TITLE:</label>
-                            <input type="text" id="role" placeholder="e.g. Data Analyst" class="form-input">
+                            <label for="role" class="form-label">Job Role / Title</label>
+                            <input type="text" id="role" placeholder="e.g. Software Engineer" class="form-input">
                         </div>
                         <div class="form-group">
-                            <label for="status" class="form-label">STATUS LEVEL:</label>
+                            <label for="status" class="form-label">Application Status</label>
                             <select id="status" class="form-select">
                                 <option value="wishlist">WISHLIST</option>
                                 <option value="applied">APPLIED</option>
@@ -78,21 +78,21 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="date_applied" class="form-label">DATE OF ACTION:</label>
+                            <label for="date_applied" class="form-label">Date Applied</label>
                             <input type="date" id="date_applied" class="form-input">
                         </div>
                         <div class="form-group">
-                            <label for="link" class="form-label">REFERENCE LINK:</label>
+                            <label for="link" class="form-label">Job Link URL</label>
                             <input type="url" id="link" placeholder="https://..." class="form-input">
                         </div>
                         <div class="form-group">
-                            <label for="notes" class="form-label">DOSSIER NOTES / FINDINGS:</label>
-                            <textarea id="notes" placeholder="Enter case remarks..." class="form-textarea"></textarea>
+                            <label for="notes" class="form-label">Notes & Remarks</label>
+                            <textarea id="notes" placeholder="Enter notes or interview details..." class="form-textarea"></textarea>
                         </div>
                         
                         <div class="form-actions">
-                            <button type="submit" id="submit-btn" class="stamp-btn">SUBMIT RECORD</button>
-                            <button type="button" id="cancel-edit-btn" class="cancel-btn hidden">ABORT EDIT</button>
+                            <button type="submit" id="submit-btn" class="stamp-btn">SAVE RECORD</button>
+                            <button type="button" id="cancel-edit-btn" class="cancel-btn hidden">CANCEL</button>
                         </div>
                     </form>
                 </div>
@@ -103,7 +103,7 @@
                 <div class="controls-bar">
                     <!-- Search Bar -->
                     <div class="search-box">
-                        <input type="text" id="search-input" placeholder="SEARCH COMPANY OR ROLE..." class="search-input">
+                        <input type="text" id="search-input" placeholder="Search company, role or notes..." class="search-input">
                     </div>
                     
                     <!-- Filter Chips -->
@@ -120,7 +120,7 @@
                 <div id="cases-container" class="cases-list">
                     <!-- Cases will be dynamically injected here -->
                     <div class="dossier-card empty-card">
-                        <p>NO FILES MATCHING CRITERIA FOUND IN DOSSIER.</p>
+                        <p>No job applications matching search criteria.</p>
                     </div>
                 </div>
             </section>
