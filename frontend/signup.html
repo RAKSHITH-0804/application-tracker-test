@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLASSIFIED: Job Tracker Registration</title>
+    <title>Firebase Job Tracker - Register Account</title>
     <link rel="stylesheet" href="/style.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="dossier-body">
     <div class="folder-container">
-        <div class="folder-tab">DEPT_OF_CAREERS // LOG_02</div>
+        <div class="folder-tab">🔥 FIREBASE AUTHENTICATION</div>
         <div class="dossier-card">
-            <h1 class="dossier-title">CREATE DOSSIER</h1>
-            <p class="subtitle">ESTABLISH ACCESS TO THE CLASSIFIED JOB TRACKER</p>
+            <h1 class="dossier-title">Create Account</h1>
+            <p class="subtitle">Establish access to the Firebase Job Pipeline Console</p>
             
             <div id="error-message" class="alert-box error hidden"></div>
             <div id="success-message" class="alert-box success hidden"></div>
             
             <form id="signup-form" class="dossier-form">
                 <div class="form-group">
-                    <label for="email" class="form-label">EMAIL ADDRESS:</label>
-                    <input type="email" id="email" required placeholder="name@domain.com" class="form-input">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" required placeholder="user@domain.com" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label for="password" class="form-label">SECRET KEY / PASSWORD:</label>
+                    <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" required placeholder="Min 6 characters" class="form-input" minlength="6">
                 </div>
                 
@@ -34,7 +34,7 @@
             </form>
             
             <div class="form-footer">
-                <p>ALREADY REGISTERED? <a href="/login" class="dossier-link">LOG IN &gt;&gt;</a></p>
+                <p>Already registered? <a href="/login" class="dossier-link">Sign In &gt;&gt;</a></p>
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@
                 
                 const data = await response.json();
                 if (response.ok) {
-                    successBox.innerText = 'Dossier established! Redirecting to login...';
+                    successBox.innerText = 'Account established! Redirecting to sign in...';
                     successBox.classList.remove('hidden');
                     setTimeout(() => {
                         window.location.href = '/login';
