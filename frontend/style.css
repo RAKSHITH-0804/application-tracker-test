@@ -3,6 +3,7 @@
 :root {
     --firebase-navy: #051e34;
     --firebase-navy-light: #102a43;
+    --firebase-navy-dark: #030f1d;
     --firebase-blue: #1a73e8;
     --firebase-blue-hover: #1557b0;
     --firebase-yellow: #ffca28;
@@ -32,6 +33,7 @@
 
     --shadow-card: 0 1px 3px rgba(60, 64, 67, 0.12), 0 1px 2px rgba(60, 64, 67, 0.08);
     --shadow-hover: 0 4px 12px rgba(60, 64, 67, 0.15);
+    --shadow-auth: 0 12px 32px rgba(5, 30, 52, 0.25);
     --radius-card: 12px;
     --radius-btn: 8px;
     --radius-input: 8px;
@@ -52,7 +54,196 @@ body.dossier-body {
     min-height: 100vh;
 }
 
-/* Header Section - Firebase Console Style Header */
+/* -------------------------------------------------------------
+   FIREBASE AUTH UI SPECIFIC STYLES (Login / Signup Pages)
+------------------------------------------------------------- */
+body.firebase-auth-bg {
+    background: radial-gradient(circle at 50% 30%, var(--firebase-navy-light) 0%, var(--firebase-navy) 70%, var(--firebase-navy-dark) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.firebase-auth-wrapper {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.firebase-auth-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 36px;
+    box-shadow: var(--shadow-auth);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.firebase-logo-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.firebase-flame-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+}
+
+.firebase-auth-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+}
+
+.firebase-auth-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.google-auth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-btn);
+    padding: 11px 16px;
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.google-auth-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #c1c4c8;
+    box-shadow: 0 2px 6px rgba(60, 64, 67, 0.15);
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 22px 0;
+    color: var(--text-muted);
+    font-size: 0.775rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.auth-divider::before, .auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.auth-divider span {
+    padding: 0 12px;
+}
+
+.firebase-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.firebase-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.firebase-form .form-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.firebase-form .form-input {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-input);
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: all 0.2s;
+}
+
+.firebase-form .form-input:focus {
+    background-color: #ffffff;
+    border-color: var(--firebase-blue);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+}
+
+.firebase-primary-btn {
+    background-color: var(--firebase-blue);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-btn);
+    padding: 13px 20px;
+    font-size: 0.975rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    font-family: 'Inter', sans-serif;
+    margin-top: 6px;
+    box-shadow: 0 1px 3px rgba(26, 115, 232, 0.3);
+}
+
+.firebase-primary-btn:hover {
+    background-color: var(--firebase-blue-hover);
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.4);
+}
+
+.firebase-primary-btn:active {
+    transform: translateY(1px);
+}
+
+.firebase-auth-footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.firebase-auth-footer a {
+    color: var(--firebase-blue);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.firebase-auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* -------------------------------------------------------------
+   DASHBOARD HEADER & LAYOUT STYLES
+------------------------------------------------------------- */
 .dossier-header {
     background-color: var(--firebase-navy);
     color: #ffffff;
@@ -213,23 +404,7 @@ body.dossier-body {
     }
 }
 
-/* Folder / Card Container */
-.folder-container {
-    max-width: 440px;
-    margin: 60px auto;
-}
-
-.folder-tab {
-    display: inline-block;
-    background-color: var(--firebase-navy);
-    color: var(--firebase-yellow);
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 6px 16px;
-    border-radius: 8px 8px 0 0;
-    letter-spacing: 0.03em;
-}
-
+/* Dashboard Form Card */
 .dossier-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -364,23 +539,6 @@ body.dossier-body {
 .cancel-btn:hover {
     background-color: #f1f3f4;
     color: var(--text-primary);
-}
-
-.form-footer {
-    margin-top: 24px;
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
-
-.dossier-link {
-    color: var(--firebase-blue);
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.dossier-link:hover {
-    text-decoration: underline;
 }
 
 /* Alert Boxes */
