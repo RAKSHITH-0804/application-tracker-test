@@ -113,6 +113,25 @@ function updateStats() {
     document.getElementById('stat-rejected').innerText = counts.rejected;
 }
 
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function safeUrl(url) {
+    if (!url) return null;
+    const trimmed = String(url).trim();
+    if (/^https?:\/\//i.test(trimmed)) {
+        return escapeHtml(trimmed);
+    }
+    return null;
+}
+
 // Render filtered applications in the list container
 function renderApplications() {
     const container = document.getElementById('cases-container');
@@ -122,7 +141,7 @@ function renderApplications() {
     const filtered = allApplications.filter(app => {
         const matchesFilter = activeFilter === 'all' || app.status === activeFilter;
         const matchesSearch = searchQuery === '' || 
-            app.company.toLowerCase().includes(searchQuery) || 
+            (app.company && app.company.toLowerCase().includes(searchQuery)) ||
             (app.role && app.role.toLowerCase().includes(searchQuery)) ||
             (app.notes && app.notes.toLowerCase().includes(searchQuery));
         return matchesFilter && matchesSearch;
@@ -140,21 +159,41 @@ function renderApplications() {
     filtered.forEach(app => {
         const card = document.createElement('div');
         card.className = 'dossier-card case-item';
-        card.setAttribute('data-status', app.status);
+        card.setAttribute('data-status', escapeHtml(app.status));
+
+        const dateString = app.date_applied ? escapeHtml(app.date_applied) : 'N/A';
+        const validLink = safeUrl(app.link);
+        const linkHtml = validLink
+            ? `<a href="${validLink}" target="_blank" rel="noopener noreferrer" class="dossier-link">ACCESS FILE LINK &gt;&gt;</a>`
+            : 'N/A';
         
+        const companyEscaped = escapeHtml(app.company);
+        const roleEscaped = app.role ? escapeHtml(app.role) : 'ROLE: UNKNOWN';
+        const statusEscaped = escapeHtml(app.status);
+        const notesEscaped = app.notes ? escapeHtml(app.notes) : '';
         const dateString = app.date_applied ? app.date_applied : 'N/A';
         const linkHtml = app.link ? `<a href="${app.link}" target="_blank" class="dossier-link">Open Link &gt;&gt;</a>` : 'N/A';
         
         card.innerHTML = `
             <div class="case-header-row">
                 <div class="case-title-area">
+                    <h3>${companyEscaped}</h3>
+                    <span class="case-role">${roleEscaped}</span>
                     <h3>${app.company}</h3>
                     <span class="case-role">${app.role || 'ROLE: UNSPECIFIED'}</span>
                 </div>
-                <div class="stamp-badge">${app.status}</div>
+                <div class="stamp-badge">${statusEscaped}</div>
             </div>
             
             <div class="case-details-row">
+                <div class="case-meta">DATE DEPLOYED: <span>${dateString}</span></div>
+                <div class="case-meta">LINK: <span>${linkHtml}</span></div>
+                ${notesEscaped ? `<div class="case-notes-block">${notesEscaped}</div>` : ''}
+            </div>
+            
+            <div class="case-actions">
+                <button class="action-btn" onclick="startEdit(${Number(app.id)})">EDIT FILE</button>
+                <button class="action-btn delete" onclick="deleteCase(${Number(app.id)})">PURGE RECORD</button>
                 <div class="case-meta">DATE APPLIED: <span>${dateString}</span></div>
                 <div class="case-meta">REFERENCE LINK: <span>${linkHtml}</span></div>
                 ${app.notes ? `<div class="case-notes-block">${app.notes}</div>` : ''}
